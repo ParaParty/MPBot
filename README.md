@@ -3,6 +3,7 @@
 
 MPBot(Mirai PHP Bot)是基于[Workerman](https://www.workerman.net/)与[OneBot-Kotlin](https://github.com/yyuueexxiinngg/onebot-kotlin)制作的PHP SDK，旨在帮助PHP用户快速开发和使用Mirai机器人。
 
+当前已支持OneBot-Kotlin列出并支持的所有API、事件
 ## 开始使用
 请在Mirai的插件中加入[OneBot-Kotlin](https://github.com/yyuueexxiinngg/onebot-kotlin)插件
 

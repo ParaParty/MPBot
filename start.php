@@ -22,7 +22,7 @@ function onMessageApi($json)//api回调，每次调用API函数会触发
 		$data = $json['data'];
 		switch($data['ClassType'])
 		{
-            case 'MessageData'://send_private_msg() \ send_group_msg() \ send_msg()
+		    case 'MessageData'://send_private_msg() \ send_group_msg() \ send_msg()
                 //do some thing
                 break;
             case 'ResponseMessageData'://?
