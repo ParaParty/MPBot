@@ -9,7 +9,7 @@ MPBot(Mirai PHP Bot)是基于[Workerman](https://www.workerman.net/)与[OneBot-K
 
 配置环境，PHP版本应>=5.3.3，建议>=5.4，使用>=7.0会获得更高的性能
 ### Windows下
-[PHP Windows 下载方法](https://www.workerman.net/windows)
+下载PHP：[PHP Windows 下载方法](https://www.workerman.net/windows)
 
 下载解压后配置Windows系统变量
 
@@ -28,3 +28,9 @@ Linux用户可以运行以下脚本检查本地环境是否满足PHP要求
 如果脚本中全部提示ok，则代表满足PHP运行环境
 
 运行`php start.php start`使用，如需守护进程启动可运行`php start.php start -d`
+
+## 更多信息
+
+* [Mirai](https://github.com/mamoe/mirai)
+* [Workerman](https://www.workerman.net/)
+* [OneBot-Kotlin](https://github.com/yyuueexxiinngg/onebot-kotlin)
