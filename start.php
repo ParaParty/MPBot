@@ -26,7 +26,7 @@ function onMessageApi($json)//api回调，每次调用API函数会触发
 				//do some thing
 				break;
 			case 'ResponseMessageData'://?
-				Data::sendPrivateMsg(345793738, json_encode($data));
+				Data::sendPrivateMsg(123456789, json_encode($data));
 				break;
 			case 'GetMessageData'://get_msg()
 				//do some thing
