@@ -4,7 +4,7 @@ namespace Workerman\Bot;
 use Workerman\Connection\AsyncTcpConnection;
 
 Class Data{
-	public static AsyncTcpConnection $connection;
+	public static $connection;
 	
 	public function __construct($connection){
 		self::$connection = $connection;
