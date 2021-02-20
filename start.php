@@ -10,7 +10,7 @@ $bot = new Bot('ws://' . $ws_url . ':' . $ws_port);
 
 function onConnectApi()//api系统正常连接后，会触发一次 (类似于插件启用时)
 {
-	//Data函数的使用应该在连接成功之后，否则机器人无法接收
+	//Data函数的使用应该在连接成功之后，否则机器人无法工作
 	Data::getLoginInfo();
 }
 
@@ -22,58 +22,58 @@ function onMessageApi($json)//api回调，每次调用API函数会触发
 		$data = $json['data'];
 		switch($data['ClassType'])
 		{
-			case 'MessageData'://send_private_msg() \ send_group_msg() \ send_msg()
+			case 'MessageData'://send_private_msg()回调 \ send_group_msg()回调 \ send_msg()回调
 				//do some thing
 				break;
 			case 'ResponseMessageData'://?
-				Data::sendPrivateMsg(123456789, json_encode($data));
+				//Data::sendPrivateMsg(123456789, json_encode($data));
 				break;
-			case 'GetMessageData'://get_msg()
+			case 'GetMessageData'://get_msg()回调
 				//do some thing
 				break;
 			case 'LoginInfoData'://getLoginInfo()回调
 				echo "登录QQ账号: {$data['nickname']} ({$data['user_id']})\n";
 				//do some thing
 				break;
-			case 'StrangerInfoData'://get_stranger_info()
+			case 'StrangerInfoData'://get_stranger_info()回调
 				//do some thing
 				break;
-			case 'FriendData'://get_friend_list()
+			case 'FriendData'://get_friend_list()回调
 				//do some thing
 				break;
-			case 'GroupData'://get_group_list()
+			case 'GroupData'://get_group_list()回调
 				//do some thing
 				break;
-			case 'GroupInfoData'://get_group_info()
+			case 'GroupInfoData'://get_group_info()回调
 				//do some thing
 				break;
-			case 'MemberInfoData'://get_group_member_info() \ get_group_member_list() List <>
+			case 'MemberInfoData'://get_group_member_info()回调 \ get_group_member_list() List <>回调
 				//do some thing
 				break;
-			case 'ImageInfoData'://get_image()
+			case 'ImageInfoData'://get_image()回调
 				//do some thing
 				break;
-			case 'RecordInfoData'://get_record()
+			case 'RecordInfoData'://get_record()回调
 				//do some thing
 				break;
-			case 'CanSendImageData'://can_send_image()
+			case 'CanSendImageData'://can_send_image()回调
 				//do some thing
 				break;
-			case 'CanSendRecordData'://can_send_record()
+			case 'CanSendRecordData'://can_send_record()回调
 				//do some thing
 				break;
-			case 'PluginStatusData'://get_status() <PluginsGoodData>
+			case 'PluginStatusData'://get_status() <PluginsGoodData>回调
 				//do some thing
 				break;
 			/*
-			case 'PluginsGoodData'://get_status()
+			case 'PluginsGoodData'://get_status()回调
 				//do some thing
 				break;
 			*/
-			case 'VersionInfoData'://get_version_info()
+			case 'VersionInfoData'://get_version_info()回调
 				//do some thing
 				break;
-			case 'HonorInfoData'://get_group_honor_info()
+			case 'HonorInfoData'://get_group_honor_info()回调
 				//do some thing
 				break;
 			default:
@@ -122,10 +122,14 @@ function onMessageEvent($data)//event回调，当有事件时会触发
 			//do some thing
 			break;
 		case 'CQFriendRequestEvent'://加好友请求
-			//do some thing
+            if($data['user_id'] == 12345678){
+                Data::setFriendAdd($data['flag']);
+            }
 			break;
 		case 'CQGroupMemberAddRequestEvent'://加群请求／邀请
-			//do some thing
+            if($data['user_id'] == 12345678){
+                Data::setGroupAdd($data['flag'], $data['sub_type']);
+            }
 			break;
 		case 'CQGroupMemberNudgedEvent'://群内戳一戳
 			//do some thing
