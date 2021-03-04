@@ -10,8 +10,77 @@ $bot = new Bot('ws://' . $ws_url . ':' . $ws_port);
 
 function onConnectApi()//api系统正常连接后，会触发一次 (类似于插件启用时)
 {
-	//Data函数的使用应该在连接成功之后，否则机器人无法工作
+	//Data函数的使用应该在连接成功之后，否则机器人无法正常工作
 	Data::getLoginInfo();
+}
+
+/**
+ * 私聊消息事件，每次私聊都会被调用
+ *
+ * @param array $quick 快速操作-事件数据对象
+ * @param int $time 事件发生的时间戳
+ * @param int $self_id 收到事件的机器人 QQ 号
+ * @param string $post_type 上报类型 (可能是message)
+ * @param string $message_type 消息类型 (可能是private)
+ * @param string $sub_type 消息子类型，如果是好友则是 friend，如果是群临时会话则是 group (可能是friend、group、other)
+ * @param int $message_id 消息 ID
+ * @param int $user_id 发送者 QQ 号
+ * @param string $message 消息内容
+ * @param string $raw_message 原始消息内容
+ * @param int $font 字体
+ * @param array $sender 发送人信息 (user_id, nickname, card, sex, age, area, level, role, title)
+ */
+function PrivateMessageEvent($quick, $time, $self_id, $post_type, $message_type, $sub_type, $message_id, $user_id, $message, $raw_message, $font, $sender)
+{
+	Data::sendPrivateMsg($user_id, $message);
+}
+
+/**
+ * 群消息事件，每次群聊都会被调用
+ *
+ * @param array $quick 快速操作-事件数据对象
+ * @param int $time 事件发生的时间戳
+ * @param int $self_id 收到事件的机器人 QQ 号
+ * @param string $post_type 上报类型 (可能是message)
+ * @param string $message_type 消息类型 (可能是group)
+ * @param string $sub_type 消息子类型，正常消息是 normal，匿名消息是 anonymous，系统提示（如「管理员已禁止群内匿名聊天」）是 notice
+ * @param int $message_id 消息 ID
+ * @param int $group_id 群号
+ * @param int $user_id 发送者 QQ 号
+ * @param object $anonymous 匿名信息，如果不是匿名消息则为 null
+ * @param string $message 消息内容
+ * @param string $raw_message 原始消息内容
+ * @param int $font 字体
+ * @param array $sender 发送人信息 (user_id, nickname, card, sex, age, area, level, role, title)
+ */
+function GroupMessageEvent($quick, $time, $self_id, $post_type, $message_type, $sub_type, $message_id, $group_id, $user_id, $anonymous, $message, $raw_message, $font, $sender)
+{
+	//do some thing
+}
+
+function CQGroupAdministratorChangeEvent($time, $self_id, $post_type, $notice_type, $sub_type, $group_id, $user_id)
+{
+	//do some thing
+}
+
+function CQGroupMuteChangeEvent($time, $self_id, $post_type, $notice_type, $sub_type, $group_id, $operator_id, $user_id, $duration)
+{
+	//do some thing
+}
+
+function CQFriendAddEvent($time, $self_id, $post_type, $notice_type, $user_id)
+{
+	//do some thing
+}
+
+function CQFriendRequestEvent($quick, $time, $self_id, $post_type, $request_type, $user_id, $comment, $flag)
+{
+	Data::setFriendAdd($flag);
+}
+
+function CQGroupMemberAddRequestEvent($quick, $time, $self_id, $post_type, $request_type, $sub_type, $group_id, $user_id, $comment, $flag)
+{
+	//do some thing
 }
 
 //API回调参数请访问OneBot标准: https://github.com/howmanybots/onebot/blob/master/v11/specs/api/public.md
@@ -93,66 +162,6 @@ function onCloseApi()//api连接被关闭时，会触发一次 (已自动5秒重
 function onConnectEvent()//event系统正常连接后，会触发一次 (类似于插件启用时)
 {
 	//不应该在此调用任何函数，因为api系统未确保连接成功
-}
-
-//信息回调参数请访问OneBot标准: https://github.com/howmanybots/onebot/blob/master/v11/specs/event/README.md
-function onMessageEvent($data)//event回调，当有事件时会触发
-{
-	switch($data['ClassType'])
-	{
-		case 'CQLifecycleMetaEvent'://ws生命周期
-			//do some thing
-			break;
-		case 'CQHeartbeatMetaEvent'://ws心跳
-			//do some thing
-			break;
-		case 'PrivateMessage'://私聊信息
-			Data::sendPrivateMsg($data['user_id'], $data['message']);
-			break;
-		case 'GroupMessage'://群聊信息
-			//do some thing
-			break;
-		case 'CQGroupAdministratorChangeEvent'://群管理员变动
-			//do some thing
-			break;
-		case 'CQGroupMuteChangeEvent'://群禁言
-			//do some thing
-			break;
-		case 'CQFriendAddEvent'://好友添加
-			//do some thing
-			break;
-		case 'CQFriendRequestEvent'://加好友请求
-            if($data['user_id'] == 12345678){
-                Data::setFriendAdd($data['flag']);
-            }
-			break;
-		case 'CQGroupMemberAddRequestEvent'://加群请求／邀请
-            if($data['user_id'] == 12345678){
-                Data::setGroupAdd($data['flag'], $data['sub_type']);
-            }
-			break;
-		case 'CQGroupMemberNudgedEvent'://群内戳一戳
-			//do some thing
-			break;
-		case 'CQGroupMessageRecallEvent'://群消息撤回
-			//do some thing
-			break;
-		case 'CQFriendMessageRecallEvent'://好友消息撤回
-			//do some thing
-			break;
-		case 'CQMemberHonorChangeEvent'://群成员荣誉变更
-			//do some thing
-			break;
-		case 'CQMemberJoinEvent'://群成员减少
-			//do some thing
-			break;
-		case 'CQMemberLeaveEvent'://群成员增加
-			//do some thing
-			break;
-		default:
-			print_r($data);
-			break;
-	}
 }
 
 function onCloseEvent()//event连接被关闭时，会触发一次 (已自动5秒重连)

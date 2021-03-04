@@ -1,8 +1,6 @@
 <?php
 namespace Workerman\Bot;
 
-use Workerman\Connection\AsyncTcpConnection;
-
 Class Data{
 	public static $connection;
 	
@@ -46,9 +44,11 @@ Class Data{
 	}
 
 	//TODO 可能需要修改
+
 	/**
 	 * 发送消息
 	 *
+	 * @param $message_type
 	 * @param int $user_id QQ号
 	 * @param int $group_id 群号
 	 * @param string $msg 要发送的内容
@@ -467,5 +467,17 @@ Class Data{
 	public static function cleanCache()
 	{
 		return self::$connection->send(self::getData("clean_cache"));
+	}
+
+	/**
+	 * 快速操作
+	 *
+	 * @param array $context 事件数据对象，可做精简，如去掉 message 等无用字段
+	 * @param array $operation 快速操作对象，例如 ["ban" => true, "reply" => "请不要说脏话"]
+	 * @return mixed (true|null|false)只要不返回false并且网络没有断开，而且服务端接收正常，数据基本上可以看做100%能发过去
+	 */
+	public static function quickOperation($context, $operation)
+	{
+		return self::$connection->send(self::getData(".handle_quick_operation", ["context" => $context, "operation" => $operation]));
 	}
 }
