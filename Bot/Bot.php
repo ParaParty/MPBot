@@ -26,7 +26,7 @@ Class Bot{
 			$this->api->onConnect = function($connection)
 			{
 				echo "[api]连接成功，可以开始调用\n";
-				$connection->ping = Timer::add(30, function($connection)
+				$connection->ping = Timer::add(30, function()
 				{
 					Data::getStatus();
 				});
@@ -40,7 +40,7 @@ Class Bot{
 			
 			$this->api->onClose = function($connection) {
 				echo "[api]失去与主机的连接，5秒后尝试重连...\n";
-				Timer::del($connection->ping);
+				if($connection->ping) Timer::del($connection->ping);
 				$connection->reConnect(5);
                 onCloseApi();
 			};
@@ -53,7 +53,7 @@ Class Bot{
 			$this->event->onConnect = function($connection)
 			{
 				echo "[event]连接成功，开始接收信息\n";
-				$connection->ping = Timer::add(30, function($connection)
+				$connection->ping = Timer::add(30, function()
 				{
 					Data::getStatus();
 				});
@@ -127,7 +127,7 @@ Class Bot{
 			
 			$this->event->onClose = function($connection) {
 				echo "[event]失去与主机的连接，5秒后尝试重连...\n";
-				Timer::del($connection->ping);
+				if($connection->ping) Timer::del($connection->ping);
 				$connection->reConnect(5);
                 onCloseEvent();
 			};
