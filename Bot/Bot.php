@@ -38,9 +38,10 @@ Class Bot{
                 onMessageApi(json_decode($data, true));
             };
 			
-			$this->api->onClose = function($con) {
+			$this->api->onClose = function($connection) {
 				echo "[api]失去与主机的连接，5秒后尝试重连...\n";
-				$con->reConnect(5);
+				Timer::del($connection->ping);
+				$connection->reConnect(5);
                 onCloseApi();
 			};
 
@@ -124,9 +125,10 @@ Class Bot{
 				}
             };
 			
-			$this->event->onClose = function($con) {
+			$this->event->onClose = function($connection) {
 				echo "[event]失去与主机的连接，5秒后尝试重连...\n";
-				$con->reConnect(5);
+				Timer::del($connection->ping);
+				$connection->reConnect(5);
                 onCloseEvent();
 			};
 
