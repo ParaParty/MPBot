@@ -10,7 +10,7 @@ $bot = new Bot('ws://' . $ws_url . ':' . $ws_port);
 
 function onConnectApi()//api系统正常连接后，会触发一次 (类似于插件启用时)
 {
-	//Data函数的使用应该在连接成功之后，否则机器人无法正常工作
+	//Data函数的使用应该在api系统连接成功之后，否则机器人无法正常工作
 	Data::getLoginInfo();
 }
 

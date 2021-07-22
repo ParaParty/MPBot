@@ -1,6 +1,7 @@
 <?php
 namespace Workerman\Bot;
 
+use Workerman\Lib\Timer;
 use Workerman\Worker;
 use Workerman\Connection\AsyncTcpConnection;
 
@@ -25,6 +26,10 @@ Class Bot{
 			$this->api->onConnect = function($connection)
 			{
 				echo "[api]连接成功，可以开始调用\n";
+				$connection->ping = Timer::add(30, function($connection)
+				{
+					Data::getStatus();
+				});
 				new Data($connection);
 				onConnectApi();
 			};
@@ -47,6 +52,10 @@ Class Bot{
 			$this->event->onConnect = function($connection)
 			{
 				echo "[event]连接成功，开始接收信息\n";
+				$connection->ping = Timer::add(30, function($connection)
+				{
+					Data::getStatus();
+				});
                 onConnectEvent();
 			};
 
