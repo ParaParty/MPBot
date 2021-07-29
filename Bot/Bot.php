@@ -26,9 +26,9 @@ Class Bot{
 			$this->api->onConnect = function($connection)
 			{
 				echo "[api]连接成功，可以开始调用\n";
-				$connection->ping = Timer::add(30, function()
+				$connection->ping = Timer::add(30, function()use($connection)
 				{
-					Data::getStatus();
+					$connection->send(json_encode(["type" => "ping"]));
 				});
 				new Data($connection);
 				onConnectApi();
@@ -53,9 +53,9 @@ Class Bot{
 			$this->event->onConnect = function($connection)
 			{
 				echo "[event]连接成功，开始接收信息\n";
-				$connection->ping = Timer::add(30, function()
+				$connection->ping = Timer::add(30, function()use($connection)
 				{
-					Data::getStatus();
+					$connection->send(json_encode(["type" => "ping"]));
 				});
                 onConnectEvent();
 			};
